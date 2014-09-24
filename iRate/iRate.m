@@ -107,7 +107,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 + (void)load
 {
-    [self performSelectorOnMainThread:@selector(sharedInstance) withObject:nil waitUntilDone:NO];
+    if (NSClassFromString(@"NSPageController")) {
+        // on 10.7- don't bother with iRate
+        [self performSelectorOnMainThread:@selector(sharedInstance) withObject:nil waitUntilDone:NO];
+    }
 }
 
 + (iRate *)sharedInstance
@@ -882,7 +885,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
     
     [self incrementUseCount];
-    [self checkForConnectivityInBackground];
+   // [self checkForConnectivityInBackground];
     if (self.promptAtLaunch && [self shouldPromptForRating])
     {
         [self promptIfNetworkAvailable];
@@ -896,7 +899,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
         [self incrementUseCount];
-        [self checkForConnectivityInBackground];
+      //  [self checkForConnectivityInBackground];
         if (self.promptAtLaunch && [self shouldPromptForRating])
         {
             [self promptIfNetworkAvailable];
